@@ -112,10 +112,10 @@ class LinearInterpolator extends AbstractInterpolator
 
 
 class CubicInterpolator extends AbstractInterpolator
-	constructor: (array, config)->
+	constructor: (array, config) ->
+		super arguments...
 		#clamp cubic tension to [0,1] range
 		@tangentFactor = 1 - Math.max 0, Math.min 1, config.cubicTension
-		super
 
 	# Cardinal spline with tension 0.5)
 	getTangent: (k) -> @tangentFactor*(@getClippedInput(k + 1) - @getClippedInput(k - 1))/2
@@ -143,7 +143,7 @@ makeSincKernel = (window) -> (x) -> sinc(x)*window(x)
 
 class SincFilterInterpolator extends AbstractInterpolator
 	constructor: (array, config) ->
-		super
+		super arguments...
 		#Create the lanczos kernel function
 		@a = config.sincFilterSize
 
