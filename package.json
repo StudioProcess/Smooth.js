@@ -1,0 +1,30 @@
+{
+  "name": "Smooth.js",
+  "version": "0.2.0",
+  "description": "Array interpolation library",
+  "main": "Smooth.js",
+  "dependencies": {},
+  "devDependencies": {
+    "coffeescript": "^2.3.1",
+    "jasmine-node": "^1.16.2"
+  },
+  "scripts": {
+    "compile": "coffee --compile --output lib/ .",
+    "prepublish": "npm run compile",
+    "postinstall": "npm run compile",
+    "test": "jasmine-node --coffee --verbose test/specs/*.coffee",
+    "demo": "coffee sindemo.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StudioProcess/Smooth.js.git"
+  },
+  "keywords": [
+    "interpolation",
+    "smoothjs",
+    "smooth.js",
+    "cubic",
+    "bicubic"
+  ],
+  "license": "AGPL-3.0"
+}
