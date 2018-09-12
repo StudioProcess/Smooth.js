@@ -18,5 +18,4 @@ describe 'Vector', ->
 			start = end
 
 		#Result length should be approximately 2*pi
-		expect(l).toBeCloseTo 2*Math.PI
-
+		expect(l).toBeCloseTo 2*Math.PI, 1
