@@ -1,16 +1,17 @@
 ![Smooth.js](images/logo-white.png)
 
-####Table of Contents
-[        What is this for?](#rm-what)<br/>
-[        How do I use it?](#rm-how)<br/>
-[                Configuration](#rm-config)<br/>
-[                        Interpolation Methods](#rm-method)<br/>
-[                        Clipping Modes](#rm-clip)<br/>
-[                        Scaling](#rm-scale)<br/>
-[                        Validation](#rm-valid)<br/>
-[                Interpolating Vectors](#rm-vec)<br/>
-[                Function Properties](#rm-prop)<br/>
-[        Future Plans](#rm-future)<br/>
+#### Table of Contents
+
+* [What is this for?](#rm-what)<br/>
+* [How do I use it?](#rm-how)<br/>
+	* [Configuration](#rm-config)<br/>
+		* [Interpolation Methods](#rm-method)<br/>
+		* [Clipping Modes](#rm-clip)<br/>
+		* [Scaling](#rm-scale)<br/>
+		* [Validation](#rm-valid)<br/>
+	* [Interpolating Vectors](#rm-vec)<br/>
+	* [Function Properties](#rm-prop)<br/>
+* [Future Plans](#rm-future)<br/>
 
 <a name = "rm-what" />
 # What is this for?
@@ -51,7 +52,7 @@ options described below.
 <a name = "rm-method" />
 ### Interpolation Methods
 
-        (For visual illustrations of these interpolation methods see 
+(For visual illustrations of these interpolation methods see 
 [the wiki](https://github.com/osuushi/Smooth.js/wiki/Interpolation-Methods))
 
 The `method` config option specifies the interpolation method. There are three possible values for this 
@@ -242,7 +243,7 @@ console.log(s(1));		// => 1
 ```
 
 <a name="rm-valid" />
-###Validation
+### Validation
 
 By default the input array you pass to `Smooth` will be examined thoroughly to make sure that the input is 
 valid, and exceptions will be thrown if any problems are found. This can be a performance consideration if you
@@ -258,7 +259,7 @@ This will cause the Smooth function to only validate the first element of each a
 
 
 <a name = "rm-vec" />
-##Interpolating Vectors
+## Interpolating Vectors
 
 So far all of the example code we've seen has used scalar arrays, but Smooth.js supports interpolation of 
 vectors of arbitrary dimension. Simply supply the vectors as arrays. For example, this code:
