@@ -2,7 +2,7 @@ class SimpleCanvas {
   constructor(selector, width, height) {
     this.width = width;
     this.height = height;
-    this.canvas = document.querySelector('canvas');
+    this.canvas = document.querySelector(selector);
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = width;
     this.canvas.height = height;
@@ -11,6 +11,7 @@ class SimpleCanvas {
   }
   
   points(points, color='#000', radius=1) {
+    if (!points || !points.length) { return; }
     this.ctx.fillStyle = color;
     points.forEach(p => {
       this.ctx.beginPath();
@@ -21,6 +22,7 @@ class SimpleCanvas {
   }
   
   lines(points, color='#000', weight=1) {
+    if (!points || !points.length) { return; }
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = weight;
     this.ctx.beginPath();

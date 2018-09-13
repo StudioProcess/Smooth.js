@@ -15,7 +15,8 @@ function range(stop) {
   return out;
 }
 
-const main = canvas('#main', canvasSize, canvasSize);
+const main = canvas('#_2d', canvasSize, canvasSize);
+const side = canvas('#_1d', canvasSize, canvasSize);
 
 let cp0 = []; // pre-generated control points
 let cp = []; // control points
@@ -44,14 +45,41 @@ function runInterpolation() {
   cp = cp0.slice(0, num);
   ip = [];
   let s = Smooth(cp, { method, clip, cubicTension, sincFilterSize, sincWindow });
-    
+  
+  let pcs = cp.length-1; // number of curve pieces
   for (let p=-1; p<cp.length; p++) {
-    for (let i=0; i<=res; i++) {
+    for (let i=0; i<res; i++) {
       let u = p + i/res;
       ip.push( s(u) );
     }
   }
   // console.log(ip);
+}
+
+function drawCurve(scanvas, cp, ip) {
+  scanvas.clear();
+  scanvas.lines (ip, '#000', 1 );
+  scanvas.points(cp, '#000', 6);
+  scanvas.points(ip, '#f00', 3);
+}
+
+function drawMain() {
+  drawCurve(main, cp, ip);
+}
+
+function drawSide() {
+  let du = cp.length - 1 + 2; // length of parameter domain
+  let sidecp = cp.map((p, i) => [
+    (canvasSize/du) * (i + 1),
+    p[1]
+  ]);
+  let sideip = ip.map((p, i) => [
+    canvasSize/(ip.length-1) * i,
+    p[1]
+  ]);
+  drawCurve(side, sidecp, sideip);
+  side.lines([ [canvasSize/du,0], [canvasSize/du,canvasSize] ], 'lightgray', 1);
+  side.lines([ [canvasSize/du*(sidecp.length),0], [canvasSize/du*(sidecp.length),canvasSize] ], 'lightgray', 1);
 }
 
 function generate() {
@@ -61,17 +89,18 @@ function generate() {
 
 function interpolate() {
   runInterpolation();
-  main.clear();
-  main.lines (ip, '#000', 1 );
-  main.points(cp, '#000', 6);
-  main.points(ip, '#f00', 3);
+  drawMain();
+  drawSide();
 }
 
 document.querySelector('button').addEventListener('click', generate);
 
-// console.log(document.querySelector('input[type=radio]'));
 document.querySelectorAll('input[type=radio], input[type=range]').forEach(e => {
   e.addEventListener('change', interpolate);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key == ' ') { generate(); e.preventDefault(); }
 });
 
 generate();
