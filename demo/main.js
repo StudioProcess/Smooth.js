@@ -1,12 +1,13 @@
 import canvas from './draw.js';
 
 const canvasSize = 1000;
+const domainMargin = 1;
 
 function radioValue(name) {
   return document.querySelector(`input[type=radio][name=${name}]:checked`).value;
 }
-function value(name) {
-  return document.querySelector(`input[name=${name}]`).value;
+function intValue(name) {
+  return parseInt(document.querySelector(`input[name=${name}]`).value);
 }
 
 function range(stop) {
@@ -25,17 +26,21 @@ let ip = []; // interpolated points
 // randomly generate control points
 function runGeneration() {
   const margin = 0.2;
-  cp0 = range(10).map(i => [
-    canvasSize*margin + Math.random()*canvasSize*(1-2*margin),
-    canvasSize*margin + Math.random()*canvasSize*(1-2*margin)
-  ]);
-  // console.log(cp);
+  cp0 = range(10).map(i => {
+    let p = [
+      canvasSize*margin + Math.random()*canvasSize*(1-2*margin),
+      canvasSize*margin + Math.random()*canvasSize*(1-2*margin)
+    ];
+    p.param = i; // save parameter
+    return p;
+  });
+  // console.log(cp0);
 }
 
 // calculate intermediate points
 function runInterpolation() {
-  let num = value('points');
-  let res = value('intermediates');
+  let num = intValue('points'); // number of control points
+  let int = intValue('intermediates'); // number of intermediates (between two adjacent control points)
   let method = radioValue('method');
   let clip = radioValue('clip');
   let cubicTension = radioValue('cubicTension');
@@ -46,14 +51,24 @@ function runInterpolation() {
   ip = [];
   let s = Smooth(cp, { method, clip, cubicTension, sincFilterSize, sincWindow });
   
-  let pcs = cp.length-1; // number of curve pieces
-  for (let p=-1; p<cp.length; p++) {
-    for (let i=0; i<res; i++) {
-      let u = p + i/res;
-      ip.push( s(u) );
-    }
+  num += 2*domainMargin;
+  let pieces = num-1; // number of curve pieces
+  let total = num + pieces*int; // total number of points/values
+  let step = pieces/(total-1);
+  
+  // console.log({
+  //   points: num,
+  //   intermediates: int,
+  //   total
+  // });
+  
+  for (let i=0; i<total; i++) {
+    let u = i*step - domainMargin; // parameter value
+    let v = s(u); // interpolated value
+    v.param = u; // save parameter
+    ip.push(v);
   }
-  // console.log(ip);
+  console.log(ip);
 }
 
 function drawCurve(scanvas, cp, ip) {
@@ -68,18 +83,14 @@ function drawMain() {
 }
 
 function drawSide() {
-  let du = cp.length - 1 + 2; // length of parameter domain
-  let sidecp = cp.map((p, i) => [
-    (canvasSize/du) * (i + 1),
-    p[1]
-  ]);
-  let sideip = ip.map((p, i) => [
-    canvasSize/(ip.length-1) * i,
-    p[1]
-  ]);
+  let dlen = cp.length - 1 + 2*domainMargin; // length of parameter domain
+  let p2x = p => canvasSize/dlen * (p+domainMargin); // parameter to x value
+
+  let sidecp = cp.map(p => [ p2x(p.param), p[1] ]);
+  let sideip = ip.map(p => [ p2x(p.param), p[1] ]);
   drawCurve(side, sidecp, sideip);
-  side.lines([ [canvasSize/du,0], [canvasSize/du,canvasSize] ], 'lightgray', 1);
-  side.lines([ [canvasSize/du*(sidecp.length),0], [canvasSize/du*(sidecp.length),canvasSize] ], 'lightgray', 1);
+  side.lines([ [p2x(0),0], [p2x(0),canvasSize] ], 'lightgray', 1);
+  side.lines([ [p2x(cp.length-1),0], [p2x(cp.length-1),canvasSize] ], 'lightgray', 1);
 }
 
 function generate() {
