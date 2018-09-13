@@ -16,7 +16,7 @@
     "postinstall": "npm run compile",
     "test": "jasmine-node --coffee --verbose test/specs/*.coffee",
     "sindemo": "coffee sindemo.coffee",
-    "demo": "live-server"
+    "demo": "live-server . --open=demo"
   },
   "repository": {
     "type": "git",
