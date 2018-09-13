@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>Smooth.js Demo</title>
   <script src="../lib/Smooth.js"></script>
+  <style>
+    * { font:11px system-ui; }
+    fieldset { display:inline-block; }
+  </style>
 </head>
 <body>
   <canvas id="main" style="border:1px solid;"></canvas>
@@ -33,9 +37,11 @@
         <label><input type="radio" name="cubicTension" value="0.75"> 0.75</label><br/>
         <label><input type="radio" name="cubicTension" value="1"> 1</label><br/>
     </fieldset>
-    <button>New Points</button>
-    <label><input type="range" name="points" min="2" max="10" value="5"> Points</label>
-    <label><input type="range" name="intermediates" min="2" max="20" value="10"> Intermediates</label>
+    <fieldset>
+      <label><input type="range" name="points" min="2" max="10" value="5"> Points</label><br/>
+      <label><input type="range" name="intermediates" min="2" max="20" value="10"> Intermediates</label><br/>
+      <button>New Points</button>
+    </fieldset>
     
     <script type="module" src='main.js'></script>
   </div>
