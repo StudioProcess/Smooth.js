@@ -6,14 +6,17 @@
   "dependencies": {},
   "devDependencies": {
     "coffeescript": "^2.3.1",
-    "jasmine-node": "^1.16.2"
+    "jasmine-node": "^1.16.2",
+    "live-server": "^1.2.0"
   },
   "scripts": {
+    "start": "npm run demo",
     "compile": "coffee --compile --output lib/ .",
     "prepublish": "npm run compile",
     "postinstall": "npm run compile",
     "test": "jasmine-node --coffee --verbose test/specs/*.coffee",
-    "demo": "coffee sindemo.coffee"
+    "sindemo": "coffee sindemo.coffee",
+    "demo": "live-server"
   },
   "repository": {
     "type": "git",
